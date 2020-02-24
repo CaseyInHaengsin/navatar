@@ -1,0 +1,1 @@
+# This is a script to upload images to users profile in Canvas and assign avatar pictures. 
