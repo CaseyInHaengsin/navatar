@@ -1,7 +1,5 @@
-const axios = require('axios');
 const csv = require('csvtojson');
 const mime = require('mime-types')
-const FormData = require('form-data');
 const fs = require('fs');
 
 const rp = require('request-promise');
