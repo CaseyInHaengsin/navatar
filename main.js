@@ -113,6 +113,28 @@ let getAvatarOptions = async (userId) => {
     return res;
 }
 
+let updateAvatar = async (userId, token) => {
+    let url =  `https://${domain}/api/v1/users/sis_user_id:${userId}`;
+
+    let options = {
+        method: 'PUT',
+        uri: url, 
+        headers: header,
+        formData: {
+            'user[avatar][token]': token
+        }
+
+    }
+    let r = await rp(options)
+        .catch((err) => {
+            console.log(err);
+        })
+        
+    let res = await r;
+    return res;
+
+}
+
 //Read CSV
 const main = async () => {
     const csvData = await csv().fromFile(csvPath);
@@ -135,10 +157,21 @@ const main = async () => {
                 
                 confirmUpload(confirmationUrl).then((re) => {
                     let confirmJ = JSON.parse(re);
-                    console.log(confirmJ);
+                    let fId = confirmJ.id;
+                    console.log(fId);
 
                     getAvatarOptions(userId).then((are) => {
-                        console.log(are);
+                        let jAr = JSON.parse(are);
+                        jAr.forEach((opt) => {
+                                if (fName == opt.display_name){
+                                    let token = opt.token;
+                                    updateAvatar(userId, token).then((res) => {
+                                        console.log(res);
+                                    })
+                                    
+                                }
+                        });
+
                     })
 
                 })
